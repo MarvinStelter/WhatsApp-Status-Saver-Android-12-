@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/about"
+        android:id="@+id/action_about"/>
+    <item android:title="@string/privacy_policy"
+        android:id="@+id/action_privacy"/>
+    <item android:title="@string/change_theme"
+        android:icon="@drawable/ic_day"
+        app:showAsAction="always"
+        android:id="@+id/action_theme"/>
+</menu>

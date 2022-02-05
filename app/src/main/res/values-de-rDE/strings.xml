@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Status Saver</string>
+    <string name="photos">Fotos</string>
+    <string name="menu_videos">Videos</string>
+    <string name="menu_saved">Gespeichert</string>
+    <string name="follow_me_on_instagram">Folg mir auf Instagram</string>
+    <string name="videos">Videos</string>
+    <string name="privacy_policy">Datenschutzerklärung</string>
+    <string name="about">Über</string>
+    <string name="change_theme">Design wechseln</string>
+    <string name="saved">Status gespeichert, klicke hier zum ansehen</string>
+    <string name="no_photos_available">Keine Fotos vorhanden :(</string>
+    <string name="an_error_occured">Ein Fehler ist aufgetreten!</string>
+    <string name="no_videos_available">Keine Videos vorhanden :(</string>
+</resources>

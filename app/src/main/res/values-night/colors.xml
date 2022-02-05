@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="textColor">#FFFFFF</color>
+    <color name="actionBarColor">@color/primaryNight</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="backgroundPrimary">@color/primaryNight</color>
+    <color name="backgroundPrimaryDark">@color/primaryDarkNight</color>
+</resources>

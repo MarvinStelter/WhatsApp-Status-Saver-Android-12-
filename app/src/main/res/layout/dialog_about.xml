@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_insta"
+    android:visibility="gone"
+    android:layout_height="match_parent">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="120dp"
+        app:cardCornerRadius="7dp"
+        android:layout_marginBottom="120dp"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="match_parent"
+                android:src="@drawable/ic_me"
+                android:id="@+id/iv_me"
+                android:scaleType="centerCrop"
+                android:layout_height="match_parent"/>
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_baseline_close_24"
+                android:id="@+id/iv_close"
+                android:layout_margin="5dp"
+                android:layout_height="40dp"/>
+
+            <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                app:cardCornerRadius="7dp"
+                android:id="@+id/cv_instagram"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="10dp"
+                android:layout_height="50dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:background="@color/backgroundPrimaryDark"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="@string/follow_me_on_instagram"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:textColor="#ffffff"
+                        android:layout_centerInParent="true"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

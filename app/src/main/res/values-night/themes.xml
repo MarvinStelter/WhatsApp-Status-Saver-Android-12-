@@ -1,0 +1,24 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.DarkTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryNight</item>
+        <item name="colorPrimaryDark">@color/primaryDarkNight</item>
+        <item name="colorAccent">@color/accentNight</item>
+
+        <item name="actionBarTheme">@style/AppTheme.ActionBar.Theme</item>
+        <item name="actionBarStyle">@style/AppTheme.ActionBar.Style</item>
+
+    </style>
+
+    <style name="AppTheme.ActionBar.Theme" parent="ThemeOverlay.MaterialComponents.ActionBar.Surface">
+        <item name="colorSurface">@color/actionBarColor</item>
+        <item name="colorOnSurface">@android:color/white</item>
+    </style>
+
+    <style name="AppTheme.ActionBar.Style" parent="Widget.MaterialComponents.ActionBar.Surface">
+        <item name="titleTextStyle">@style/TextAppearance.AppCompat.Widget.ActionBar.Title</item>
+        <item name="subtitleTextStyle">@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle</item>
+    </style>
+
+</resources>

@@ -1,0 +1,143 @@
+package com.citroncode.statussaver.Utils;
+
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
+import android.widget.Toast;
+import androidx.annotation.RequiresApi;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Random;
+
+public class StorageFunctions {
+
+
+    public boolean savePhotoQ(Context context, Bitmap image){
+        String currentDate = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String filename = "status_" + currentDate + "_" + new Random().nextInt(61) + 20;
+        try {
+            Bitmap bm = image;
+            File directory = null;
+            directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            File file = new File(directory, filename + ".png");
+            FileOutputStream outputStream = null;
+            outputStream = new FileOutputStream(file);
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            outputStream.flush();
+            outputStream.getFD().sync();
+            outputStream.close();
+            MediaScannerConnection.scanFile(context, new String[] {file.getAbsolutePath()}, null, null);
+            return true;
+            //TODO Show Ads
+        } catch (IOException e) {
+            Toast.makeText(context, "Sticker couldn't be saved. Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    public boolean save(File fileStatus, int statusMode, Context ctx){
+
+
+        String fileName;
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+        String currentDateTime = sdf.format(new Date());
+
+        if (statusMode == 1) {
+            fileName = "VID_SVAMS_" + currentDateTime + new Random().nextInt(61) + 20 + ".mp4";
+        } else {
+            fileName = "IMG_SVAMS_" + currentDateTime + new Random().nextInt(61) + 20 + ".jpg";
+        }
+
+        File destFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator + fileName);
+
+        try {
+
+            org.apache.commons.io.FileUtils.copyFile(fileStatus, destFile);
+            destFile.setLastModified(System.currentTimeMillis());
+            new SingleMediaScanner(ctx, Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM));
+            //TODO Notify
+            return true;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(ctx, "error:  " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        //TODO Shows ads
+
+    }
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    public boolean saveVideoQ(Uri uri3, Context ctx){
+
+        Context context = ctx;
+        String videoFileName = "video_" + System.currentTimeMillis() + ".mp4";
+
+        ContentValues valuesvideos;
+        valuesvideos = new ContentValues();
+        valuesvideos.put(MediaStore.Video.Media.RELATIVE_PATH, "Movies/");
+        valuesvideos.put(MediaStore.Video.Media.TITLE, videoFileName);
+        valuesvideos.put(MediaStore.Video.Media.DISPLAY_NAME, videoFileName);
+        valuesvideos.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");
+        valuesvideos.put(MediaStore.Video.Media.DATE_ADDED, System.currentTimeMillis() / 1000);
+        valuesvideos.put(MediaStore.Video.Media.DATE_TAKEN, System.currentTimeMillis());
+        valuesvideos.put(MediaStore.Video.Media.IS_PENDING, 1);
+        ContentResolver resolver = context.getContentResolver();
+        Uri collection = MediaStore.Video.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY); //all video files on primary external storage
+        Uri uriSavedVideo = resolver.insert(collection, valuesvideos);
+
+        ParcelFileDescriptor pfd;
+
+        try {
+            pfd = context.getContentResolver().openFileDescriptor(uriSavedVideo,"w");
+
+            assert pfd != null;
+            FileOutputStream out = new FileOutputStream(pfd.getFileDescriptor());
+
+            // Get the already saved video as fileinputstream from here
+            InputStream in = ctx.getContentResolver().openInputStream(uri3);
+
+
+            byte[] buf = new byte[8192];
+
+            int len;
+            int progress = 0;
+            while ((len = in.read(buf)) > 0) {
+                progress = progress + len;
+
+                out.write(buf, 0, len);
+            }
+            out.close();
+            in.close();
+            pfd.close();
+            valuesvideos.clear();
+            valuesvideos.put(MediaStore.Video.Media.IS_PENDING, 0);
+            valuesvideos.put(MediaStore.Video.Media.IS_PENDING, 0); //only your app can see the files until pending is turned into 0
+
+            context.getContentResolver().update(uriSavedVideo, valuesvideos, null, null);
+
+            return true;
+        } catch (Exception e) {
+            Toast.makeText(context, "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+
+            return false;
+        }
+    }
+}

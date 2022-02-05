@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="accent">#25D366</color>
+    <color name="primary">#128C7E</color>
+    <color name="primaryDark">#075E54</color>
+
+    <color name="accentNight">#00AF9B</color>
+    <color name="primaryNight">#222D36</color>
+    <color name="primaryDarkNight">#0F1D24</color>
+
+    <color name="textColor">#000000</color>
+    <color name="actionBarColor">#128C7E</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="backgroundPrimary">@color/primary</color>
+    <color name="backgroundPrimaryDark">@color/primaryDark</color>
+</resources>
