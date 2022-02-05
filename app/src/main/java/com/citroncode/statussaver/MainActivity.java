@@ -10,22 +10,13 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-import androidx.documentfile.provider.DocumentFile;
 import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.UriPermission;
@@ -33,24 +24,15 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.ParcelFileDescriptor;
 import android.os.Parcelable;
 import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.citroncode.statussaver.Adapter.FragmentAdapter;
 import com.google.android.gms.ads.AdRequest;
@@ -61,14 +43,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.hbisoft.pickit.PickiT;
 import com.hbisoft.pickit.PickiTCallbacks;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -92,14 +71,10 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
     PickiT pickiT;
     public static boolean darkmode_state;
     public static Uri uri;
-    static Uri uriAccess;
     String stringWA = "primary:Android/media/com.whatsapp/WhatsApp/Media/.Statuses/";
-    private static final String CHANNEL_NAME = "MARVIN";
     private InterstitialAd mInterstitialAd;
-    SharedPreferences.Editor editor;
     TabLayout tabLayout;
     ActivityResultLauncher<Intent> resultLauncher;
-    //key password is testtest1 remember this (Key of notification archive)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -248,53 +223,8 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
     }
 
 
-    private static void showNotification(Context context, File destFile) {
-        //TODO Fix Android 10+ File can't be displayed in the galery on nofif click
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            makeNotificationChannel(context);
-        }
-
-        Uri data = FileProvider.getUriForFile(context, "com.citroncode.statussaver" + ".provider", new File(destFile.getAbsolutePath()));
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-
-        if (statusMode == 1) {
-            intent.setDataAndType(data, "video/*");
-        } else {
-            intent.setDataAndType(data, "image/*");
-        }
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-        PendingIntent pendingIntent =
-                PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_MUTABLE);
-        NotificationCompat.Builder notification =
-                new NotificationCompat.Builder(context, CHANNEL_NAME);
-
-        notification.setSmallIcon(R.drawable.ic_round_save_36)
-                .setContentTitle(destFile.getName())
-                .setContentText(context.getString(R.string.saved))
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent);
-
-        NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-
-        assert notificationManager != null;
-        notificationManager.notify(new Random().nextInt(), notification.build());
 
 
-    }
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private static void makeNotificationChannel(Context context) {
-
-        NotificationChannel channel = new NotificationChannel(CHANNEL_NAME, "Saved", NotificationManager.IMPORTANCE_DEFAULT);
-        channel.setShowBadge(true);
-
-        NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-
-        assert notificationManager != null;
-        notificationManager.createNotificationChannel(channel);
-    }
     private void showFullscreenAd(){
         if (mInterstitialAd != null) {
             mInterstitialAd.show(MainActivity.this);
