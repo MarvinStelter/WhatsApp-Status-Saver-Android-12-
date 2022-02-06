@@ -1,19 +1,25 @@
 package com.citroncode.statussaver.Fragments;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
@@ -24,6 +30,9 @@ import com.citroncode.statussaver.MainActivity;
 import com.citroncode.statussaver.R;
 import com.citroncode.statussaver.Adapter.PhotosAdapter;
 import com.citroncode.statussaver.Utils.StorageFunctions;
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.tapadoo.alerter.Alerter;
 
@@ -39,7 +48,6 @@ public class FragmentPhotos extends Fragment {
     RecyclerView rvStatuses;
     TextView tvNoStatuses;
     Context ctx;
-    RecyclerView rv_photos;
     RecyclerView.LayoutManager layoutManager;
     PhotosAdapter rv_adapter;
     private Activity mActivity;
@@ -195,29 +203,41 @@ public class FragmentPhotos extends Fragment {
     }
     public Bitmap getBitmapOnAndroidQ(Uri uri) {
         Bitmap bitmap = null;
-        try {
+        /*try {
             InputStream is = ctx.getContentResolver().openInputStream(uri);
             bitmap = BitmapFactory.decodeStream(is);
             is.close();
         } catch (IOException e) {
             e.printStackTrace();
+            Toast.makeText(ctx, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        } */
+        ContentResolver contentResolver = mActivity.getContentResolver();
+        try {
+            if(Build.VERSION.SDK_INT < 28) {
+                bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri);
+            } else {
+                ImageDecoder.Source source = ImageDecoder.createSource(contentResolver, uri);
+                bitmap = ImageDecoder.decodeBitmap(source);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return bitmap;
     }
     private void displayAlerter(boolean hasSaved){
-        if(hasSaved){
+        if(hasSaved) {
             Alerter.create(mActivity)
                     .setTitle(R.string.saved_s)
                     .setText(R.string.save_s_long)
                     .setBackgroundColorRes(R.color.backgroundPrimary)
                     .show();
-        }else{
-            Alerter.create(mActivity)
-                    .setTitle(R.string.error)
-                    .setText(R.string.error_long)
-                    .setBackgroundColorRes(R.color.backgroundPrimary)
-                    .show();
-        }
 
+            } else {
+                Alerter.create(mActivity)
+                        .setTitle(R.string.error)
+                        .setText(R.string.error_long)
+                        .setBackgroundColorRes(R.color.backgroundPrimary)
+                        .show();
+            }
     }
 }
