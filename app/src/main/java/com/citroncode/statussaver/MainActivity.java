@@ -4,7 +4,6 @@ package com.citroncode.statussaver;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.browser.customtabs.CustomTabsIntent;
@@ -33,6 +32,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.citroncode.statussaver.Adapter.FragmentAdapter;
 import com.google.android.gms.ads.AdRequest;
@@ -66,13 +66,12 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
     final int REQ_CODE_EXTERNAL_STORAGE_PERMISSION = 45;
     ViewPager vp_fragments;
     RelativeLayout rl_main;
-    FloatingActionButton fab_save;
     FragmentAdapter fragmentAdapter;
     PickiT pickiT;
     public static boolean darkmode_state;
     public static Uri uri;
     String stringWA = "primary:Android/media/com.whatsapp/WhatsApp/Media/.Statuses/";
-    private InterstitialAd mInterstitialAd;
+    public static InterstitialAd mInterstitialAd;
     TabLayout tabLayout;
     ActivityResultLauncher<Intent> resultLauncher;
 
@@ -94,11 +93,10 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        // There are no request codes
                         Intent data = result.getData();
 
                         uri = null;
-                        uri = data.getData();
+                        uri = Objects.requireNonNull(data).getData();
 
                         getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
@@ -116,8 +114,10 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
                 });
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+            Toast.makeText(this, "Android 10", Toast.LENGTH_SHORT).show();
           getAccess();
         }else{
+            Toast.makeText(this, "below Android 10", Toast.LENGTH_SHORT).show();
             if(ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
                 loadFragments();
             } else {
@@ -203,21 +203,19 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
         return false;
     }
     private void getAccess(){
-       /* uri = DocumentsContract.buildDocumentUri("com.android.externalstorage.documents", stringWA);
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-        resultLauncher.launch(intent.putExtra("android.provider.extra.INITIAL_URI", (Parcelable)DocumentsContract.buildDocumentUri((String)"com.android.externalstorage.documents", (String)stringWA)));
-        */
-
-        if (checkIfGotAccess()) {
-            uri = DocumentsContract.buildDocumentUri("com.android.externalstorage.documents", stringWA);
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-            resultLauncher.launch(intent.putExtra("android.provider.extra.INITIAL_URI", (Parcelable)DocumentsContract.buildDocumentUri((String)"com.android.externalstorage.documents", (String)stringWA)));
-        }else{
-            SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(),0);
+        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(),0);
+        String path = sharedPreferences.getString("path","");
+        if (!checkIfGotAccess() && path.length() != 0) {Toast.makeText(this, "got access already", Toast.LENGTH_SHORT).show();
             uri = Uri.parse(sharedPreferences.getString("path",""));
             Log.i("wss","uri loaded: " + uri.toString());
 
             loadFragments();
+
+        }else{
+            Toast.makeText(this, "open tree", Toast.LENGTH_SHORT).show();
+            uri = DocumentsContract.buildDocumentUri("com.android.externalstorage.documents", stringWA);
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+            resultLauncher.launch(intent.putExtra("android.provider.extra.INITIAL_URI", (Parcelable)DocumentsContract.buildDocumentUri((String)"com.android.externalstorage.documents", (String)stringWA)));
         }
 
     }
@@ -225,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
 
 
 
-    private void showFullscreenAd(){
+    public void showFullscreenAd(){
         if (mInterstitialAd != null) {
             mInterstitialAd.show(MainActivity.this);
         } else {
