@@ -26,31 +26,34 @@ import java.util.Random;
 public class StorageFunctions {
 
 
+   
     public boolean savePhotoQ(Context context, Bitmap image){
         String currentDate = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String filename = "status_" + currentDate + "_" + new Random().nextInt(61) + 20;
-        try {
-            Bitmap bm = image;
-            File directory = null;
-            directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            File file = new File(directory, filename + ".png");
-            FileOutputStream outputStream = null;
-            outputStream = new FileOutputStream(file);
-            bm.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-            outputStream.flush();
-            outputStream.getFD().sync();
-            outputStream.close();
-            MediaScannerConnection.scanFile(context, new String[] {file.getAbsolutePath()}, null, null);
-            return true;
-            //TODO Show Ads
+        OutputStream fos;
+        boolean saved = false;
+        try{
+            ContentResolver resolver = context.getContentResolver();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, filename  + ".png");
+            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/png");
+            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures/");
+            Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+            fos = resolver.openOutputStream(imageUri);
+
+            saved = image.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            fos.close();
+
+            return saved;
         } catch (IOException e) {
             Toast.makeText(context, "Sticker couldn't be saved. Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
-            return false;
+            return saved;
         }
 
     }
-
+    
     public boolean save(File fileStatus, int statusMode, Context ctx){
 
 
