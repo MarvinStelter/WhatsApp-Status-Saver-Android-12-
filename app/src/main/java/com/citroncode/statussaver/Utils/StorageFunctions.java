@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -20,13 +19,11 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Random;
 
 public class StorageFunctions {
 
 
-   
     public boolean savePhotoQ(Context context, Bitmap image){
         String currentDate = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String filename = "status_" + currentDate + "_" + new Random().nextInt(61) + 20;
@@ -53,7 +50,7 @@ public class StorageFunctions {
         }
 
     }
-    
+
     public boolean save(File fileStatus, int statusMode, Context ctx){
 
 

@@ -4,8 +4,10 @@ package com.citroncode.statussaver;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
@@ -32,14 +34,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
-
 import com.citroncode.statussaver.Adapter.FragmentAdapter;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
 import com.hbisoft.pickit.PickiT;
 import com.hbisoft.pickit.PickiTCallbacks;
@@ -50,7 +50,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
@@ -80,13 +79,7 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         darkmode_state = getSharedPreferences(getPackageName(), MODE_PRIVATE).getBoolean("darkmode", true);
-        if (darkmode_state) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }else{
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
-
-        Objects.requireNonNull(getSupportActionBar()).setElevation(0);
+        changeThemeOnStart();
         iniApp();
 
         resultLauncher = registerForActivityResult(
@@ -107,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
                         editor.putString("path", uri.toString());
                         editor.apply();
 
+
                         loadFragments();
 
                     }
@@ -114,10 +108,8 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
                 });
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-            Toast.makeText(this, "Android 10", Toast.LENGTH_SHORT).show();
           getAccess();
         }else{
-            Toast.makeText(this, "below Android 10", Toast.LENGTH_SHORT).show();
             if(ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
                 loadFragments();
             } else {
@@ -133,40 +125,6 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
             }
         }, 5000);
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                new Thread(() -> {
-                  if(tab.getPosition() == 0){
-                      if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-                          //loadPhotosQ(uri);
-                      }else{
-                          //photos();
-                      }
-
-                  }else{
-                      if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-                          //loadVideosQ(uri);
-                      }else{
-                        //  videos();
-                      }
-
-                  }
-                }).start();
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
-
     }
     private void loadAds(){
         MobileAds.initialize(this, initializationStatus -> {
@@ -179,15 +137,12 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
                 new InterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                        // The mInterstitialAd reference will be null until
-                        // an ad is loaded.
                         mInterstitialAd = interstitialAd;
                         Log.i("load fullscreen", "onAdLoaded");
                     }
 
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        // Handle the error
                         Log.i("load fullscreen", loadAdError.getMessage());
                         mInterstitialAd = null;
                     }
@@ -205,24 +160,35 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
     private void getAccess(){
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(),0);
         String path = sharedPreferences.getString("path","");
-        if (!checkIfGotAccess() && path.length() != 0) {Toast.makeText(this, "got access already", Toast.LENGTH_SHORT).show();
+        if (!checkIfGotAccess() && path.length() != 0) {
+
             uri = Uri.parse(sharedPreferences.getString("path",""));
             Log.i("wss","uri loaded: " + uri.toString());
 
             loadFragments();
 
         }else{
-            Toast.makeText(this, "open tree", Toast.LENGTH_SHORT).show();
+
+
             uri = DocumentsContract.buildDocumentUri("com.android.externalstorage.documents", stringWA);
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
             resultLauncher.launch(intent.putExtra("android.provider.extra.INITIAL_URI", (Parcelable)DocumentsContract.buildDocumentUri((String)"com.android.externalstorage.documents", (String)stringWA)));
+
         }
 
     }
 
-
-
-
+    private void changeThemeOnStart(){
+        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(),0);
+        String path = sharedPreferences.getString("path","");
+        if(path.length() != 0){
+            if (darkmode_state) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            }else{
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+        }
+    }
     public void showFullscreenAd(){
         if (mInterstitialAd != null) {
             mInterstitialAd.show(MainActivity.this);
@@ -306,9 +272,7 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
                     instagramDialog();
                 break;
             case R.id.action_privacy:
-                CustomTabsIntent.Builder customIntent = new CustomTabsIntent.Builder();
-                customIntent.setToolbarColor(ContextCompat.getColor(MainActivity.this, R.color.backgroundPrimary));
-                openCustomTab(MainActivity.this, customIntent.build(), Uri.parse("https://api.citroncode.com/android/ss/ss_privacy.html"));
+                openCustomTab("https://api.citroncode.com/android/ss/ss_privacy.html");
                 break;
             case R.id.action_theme:
                     if (darkmode_state) {
@@ -325,6 +289,26 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
                                 .apply();
                     }
                 invalidateOptionsMenu();
+                break;
+            case  R.id.action_infos:
+
+                MaterialAlertDialogBuilder builder= new MaterialAlertDialogBuilder(MainActivity.this);
+                builder.setTitle(R.string.alert_libs_title);
+
+                String[] librarys = {"Glide", "Alerter", "PickIt"};
+                builder.setItems(librarys, (dialog, which) -> {
+                    switch (which) {
+                        case 0:
+                            openCustomTab("https://github.com/bumptech/glide");
+                        case 1:
+                            openCustomTab("https://github.com/Tapadoo/Alerter");
+                        case 2:
+                            openCustomTab("https://github.com/HBiSoft/PickiT");
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -358,9 +342,22 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
         }
         return bitmap;
     }
-    public static void openCustomTab(Activity activity, CustomTabsIntent customTabsIntent, Uri uri) {
-        customTabsIntent.intent.setPackage("com.android.chrome");
-        customTabsIntent.launchUrl(activity, uri);
+    private  void openCustomTab(String url) {
+        Uri uri = Uri.parse(url);
+
+        CustomTabsIntent.Builder customIntent = new CustomTabsIntent.Builder();
+
+        CustomTabColorSchemeParams params = new CustomTabColorSchemeParams.Builder()
+                .setNavigationBarColor(ContextCompat.getColor(MainActivity.this,R.color.backgroundPrimaryDark))
+                .setToolbarColor(ContextCompat.getColor(MainActivity.this,R.color.backgroundPrimary))
+                .setSecondaryToolbarColor(ContextCompat.getColor(MainActivity.this,R.color.backgroundPrimary))
+                .build();
+
+        customIntent.setDefaultColorSchemeParams(params);
+
+        CustomTabsIntent customTabsIntent = customIntent.build();
+        customTabsIntent.launchUrl(MainActivity.this,uri);
+
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

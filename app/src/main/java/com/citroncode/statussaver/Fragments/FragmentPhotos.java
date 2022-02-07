@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Build;
@@ -17,9 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
@@ -30,15 +26,10 @@ import com.citroncode.statussaver.MainActivity;
 import com.citroncode.statussaver.R;
 import com.citroncode.statussaver.Adapter.PhotosAdapter;
 import com.citroncode.statussaver.Utils.StorageFunctions;
-import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.FullScreenContentCallback;
-import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.tapadoo.alerter.Alerter;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 
@@ -203,14 +194,6 @@ public class FragmentPhotos extends Fragment {
     }
     public Bitmap getBitmapOnAndroidQ(Uri uri) {
         Bitmap bitmap = null;
-        /*try {
-            InputStream is = ctx.getContentResolver().openInputStream(uri);
-            bitmap = BitmapFactory.decodeStream(is);
-            is.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(ctx, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        } */
         ContentResolver contentResolver = mActivity.getContentResolver();
         try {
             if(Build.VERSION.SDK_INT < 28) {

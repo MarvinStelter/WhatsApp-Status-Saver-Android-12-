@@ -22,7 +22,6 @@ import com.citroncode.statussaver.R;
 import com.citroncode.statussaver.Utils.StorageFunctions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.tapadoo.alerter.Alerter;
-
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
