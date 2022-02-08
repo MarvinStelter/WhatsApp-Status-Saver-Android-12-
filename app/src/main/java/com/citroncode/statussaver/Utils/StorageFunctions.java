@@ -55,17 +55,20 @@ public class StorageFunctions {
 
 
         String fileName;
-
+        File destFile;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
         String currentDateTime = sdf.format(new Date());
 
         if (statusMode == 1) {
-            fileName = "VID_SVAMS_" + currentDateTime + new Random().nextInt(61) + 20 + ".mp4";
+            fileName = "status_" + currentDateTime + new Random().nextInt(61) + 20 + ".mp4";
+            destFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + File.separator + fileName);
+
         } else {
-            fileName = "IMG_SVAMS_" + currentDateTime + new Random().nextInt(61) + 20 + ".jpg";
+            fileName = "status_" + currentDateTime + new Random().nextInt(61) + 20 + ".jpg";
+            destFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + fileName);
+
         }
 
-        File destFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + File.separator + fileName);
 
         try {
 
@@ -87,7 +90,7 @@ public class StorageFunctions {
     public boolean saveVideoQ(Uri uri3, Context ctx){
 
         Context context = ctx;
-        String videoFileName = "video_" + System.currentTimeMillis() + ".mp4";
+        String videoFileName = "status_" + System.currentTimeMillis() + ".mp4";
 
         ContentValues valuesvideos;
         valuesvideos = new ContentValues();

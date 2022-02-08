@@ -134,7 +134,8 @@ public class FragmentVideos extends Fragment {
                 return true;
 
             }else{
-                File[] files = STATUS_DIRECTORY.listFiles();
+                File oldStatusPath = new File("/storage/emulated/0/WhatsApp/Media/.Statuses");
+                File[] files = oldStatusPath.listFiles();
                 for (int i = 0; i < files.length; ++i) {
                     File file = files[i];
                     if(!file.getAbsolutePath().contains("nomedia") && file.getAbsolutePath().endsWith(".mp4")){
