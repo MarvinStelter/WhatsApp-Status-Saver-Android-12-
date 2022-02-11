@@ -1,6 +1,7 @@
 package com.citroncode.statussaver.Adapter;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -41,16 +43,18 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder
         this.fragment = fragment;
     }
 
+    @NonNull
     @Override
     public ViewHolderKlasse onCreateViewHolder(ViewGroup viewGroup, int i) {
 
+        @SuppressLint("InflateParams")
         View itemView1 = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_item, null);
 
         return new ViewHolderKlasse(itemView1);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolderKlasse viewHolderKlasse, final int i) {
+    public void onBindViewHolder(@NonNull ViewHolderKlasse viewHolderKlasse, final int i) {
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
                 viewHolderKlasse.iv_play.setVisibility(View.VISIBLE);
@@ -62,7 +66,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder
         viewHolderKlasse.itemView.setOnClickListener(v -> {
 
 
-                if( MainActivity.filePathsVideosChecked.get(i) == "0"){
+                if(MainActivity.filePathsVideosChecked.get(i).equals("0")){
                     viewHolderKlasse.iv_selected.setVisibility(View.VISIBLE);
                     MainActivity.filePathsVideosChecked.set(i,"1");
                 }else{
@@ -73,18 +77,9 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder
             fragment.checkFAB();
         });
 
-        viewHolderKlasse.itemView.setOnLongClickListener(v -> {
-            return true;
-        });
-
     }
     private Bitmap getVideoThumbnail(File path){
-
-        Bitmap thumb = ThumbnailUtils.createVideoThumbnail(String.valueOf(path),
-                MediaStore.Images.Thumbnails.MINI_KIND);
-
-
-        return thumb;
+         return ThumbnailUtils.createVideoThumbnail(String.valueOf(path), MediaStore.Images.Thumbnails.MINI_KIND);
     }
     @Override
     public int getItemCount() {

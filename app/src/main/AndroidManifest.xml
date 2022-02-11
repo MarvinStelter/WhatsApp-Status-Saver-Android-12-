@@ -14,11 +14,11 @@
 
     <application
         android:name=".MyApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.DarkTheme">
         <activity
@@ -30,6 +30,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".PermissionActivity"/>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.citroncode.statussaver.Utils.provider"
@@ -43,7 +44,7 @@
         </provider>
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="YOUR CODE GOES HERE"/>
+            android:value="ca-app-pub-2797112522958944~8286767449"/>
     </application>
 
 </manifest>

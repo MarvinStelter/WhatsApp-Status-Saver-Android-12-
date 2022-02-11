@@ -13,4 +13,18 @@
     <string name="no_photos_available">Keine Fotos vorhanden :(</string>
     <string name="an_error_occured">Ein Fehler ist aufgetreten!</string>
     <string name="no_videos_available">Keine Videos vorhanden :(</string>
+    <string name="saved_s">Erfolgreich gespeichert!</string>
+    <string name="save_s_long">Gespeichert im /pictures Ordner.</string>
+    <string name="error">Fehler</string>
+    <string name="error_long">Ein Fehler ist während dem speichern aufgetreten, versuche es erneut.</string>
+    <string name="save_s_long_video">Gespeichert im /Movies Ordner.</string>
+    <string name="privacy_infos">Drittanbieter-Bibliotheken</string>
+    <string name="alert_libs_title">Drittanbieter-Bibliotheken</string>
+    <string name="storage_access">Speicher Berechtigung</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="toast_no_permissions">Diese App kann ohne die Speicher Berechtigung nicht benutzt werden!</string>
+    <string name="storage_access_required">"Zugriff auf den Speicherplatz benötigt! "</string>
+    <string name="error_contact_dev">Ein Fehler ist aufgetreten, bitte versuche es erneut oder kontaktiere den Entwickler!</string>
+    <string name="allow">Erlauben</string>
+    <string name="alert_long">Um die App nutzen zu können brauchen wir  Zugriff auf den Speicher deines Smartphones. Deine Dateien werden von uns nicht hochegeladen oder mit anderen Personen geteilt, alle Dateien bleiben Lokal auf deinem Gerät gespeichert.</string>
 </resources>

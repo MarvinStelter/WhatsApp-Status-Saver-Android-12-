@@ -14,4 +14,6 @@
     <color name="white">#FFFFFF</color>
     <color name="backgroundPrimary">@color/primary</color>
     <color name="backgroundPrimaryDark">@color/primaryDark</color>
+
+    <color name="trans">#054C44</color>
 </resources>

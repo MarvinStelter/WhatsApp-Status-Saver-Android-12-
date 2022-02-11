@@ -1,5 +1,6 @@
 package com.citroncode.statussaver.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.citroncode.statussaver.Fragments.FragmentPhotos;
@@ -35,16 +37,18 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
         this.fragment = fragment;
     }
 
+    @NonNull
     @Override
     public ViewHolderKlasse onCreateViewHolder(ViewGroup viewGroup, int i) {
 
+        @SuppressLint("InflateParams")
         View itemView1 = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_item, null);
 
         return new ViewHolderKlasse(itemView1);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolderKlasse viewHolderKlasse, final int i) {
+    public void onBindViewHolder(@NonNull ViewHolderKlasse viewHolderKlasse, final int i) {
 
 
 
@@ -59,7 +63,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
         viewHolderKlasse.itemView.setOnClickListener(v -> {
 
 
-                if( MainActivity.filePathsPhotosChecked.get(i) == "0"){
+                if(MainActivity.filePathsPhotosChecked.get(i).equals("0")){
                     viewHolderKlasse.iv_selected.setVisibility(View.VISIBLE);
                     MainActivity.filePathsPhotosChecked.set(i,"1");
                 }else{
@@ -70,9 +74,6 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
             fragment.checkFAB();
         });
 
-        viewHolderKlasse.itemView.setOnLongClickListener(v -> {
-            return true;
-        });
 
     }
     @Override

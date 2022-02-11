@@ -2,6 +2,7 @@ package com.citroncode.statussaver.Fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -11,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
@@ -41,6 +44,7 @@ public class FragmentVideos extends Fragment {
     DocumentFile[] fileListed2;
     FloatingActionButton fab_save_video;
     StorageFunctions storageHelper;
+    SharedPreferences.Editor editor;
 
     @Nullable
     @Override
@@ -55,6 +59,7 @@ public class FragmentVideos extends Fragment {
         tvNoStatuses = view.findViewById(R.id.tv_no_videos);
         fab_save_video = view.findViewById(R.id.fab_save_videos);
 
+        editor = MainActivity.sharedPreferences.edit();
         tvNoStatuses.setVisibility(View.GONE);
         layoutManager = new GridLayoutManager(ctx,3);
         storageHelper = new StorageFunctions();
@@ -81,6 +86,14 @@ public class FragmentVideos extends Fragment {
                     }
                 }
             }
+
+            if(MainActivity.sharedPreferences.getInt("counter",0) >= 5){
+                showFullscreenAd();
+                editor.putInt("counter", 0);
+            }else{
+                editor.putInt("counter", MainActivity.sharedPreferences.getInt("counter",0) + 1);
+            }
+            editor.apply();
             reset();
         });
     }
@@ -207,5 +220,13 @@ public class FragmentVideos extends Fragment {
                     .show();
         }
 
+    }
+    public void showFullscreenAd(){
+        if (MainActivity.mInterstitialAd != null) {
+            MainActivity.mInterstitialAd.show(mActivity);
+            Toast.makeText(ctx, R.string.saved_s, Toast.LENGTH_SHORT).show();
+        } else {
+            Log.d("show fullscreen", "Cant display -> No ad available!");
+        }
     }
 }

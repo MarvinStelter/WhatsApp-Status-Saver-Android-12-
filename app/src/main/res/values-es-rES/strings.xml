@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Descargador de Estados</string>
+    <string name="photos">Fotos</string>
+    <string name="menu_videos">Videos</string>
+    <string name="menu_saved">Guardados</string>
+    <string name="follow_me_on_instagram">Sígueme en Instagram</string>
+    <string name="videos">Videos</string>
+    <string name="privacy_policy">Politica de Privacidad</string>
+    <string name="about">Acerca de</string>
+    <string name="change_theme">Cambiar tema</string>
+    <string name="saved">Estado guardado, presiona para ver!</string>
+    <string name="no_photos_available">No hay fotos disponibles</string>
+    <string name="an_error_occured">Ha ocurrido un error!</string>
+    <string name="no_videos_available">No hay videos disponibles</string>
+    <string name="saved_s">Guardado correctamente!</string>
+    <string name="save_s_long">Guardado en el directorio /Pictures.</string>
+    <string name="error">Error</string>
+    <string name="error_long">Ha ocurrido un error mientras se guardaba, intente de nuevo!</string>
+    <string name="save_s_long_video">Guardado en el directorio /Movies.</string>
+    <string name="privacy_infos">Librerías de terceros</string>
+    <string name="alert_libs_title">Librerías de terceros</string>
+    <string name="storage_access">Acceso al almacenamiento</string>
+    <string name="alert_long">Para poder utilizar esta app es necesario que permitas acceder al almacenamiento para poder obtener los estados.\nTodos los archivos serán almacenados localmente y NO seran compartidos ni enviados a NADIE.</string>
+    <string name="cancel">Cancelar</string>
+    <string name="toast_no_permissions">La aplicación no puede funcionar sin el permiso de almacenamiento!</string>
+    <string name="storage_access_required">Permiso de almacenamiento necesario!</string>
+    <string name="allow">Permitir</string>
+    <string name="error_contact_dev">Algo anduvo mal, intenta de nuevo o contacta al desarrollador!</string>
+</resources>

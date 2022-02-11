@@ -1,8 +1,6 @@
 package com.citroncode.statussaver;
 
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,18 +14,14 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.UriPermission;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,8 +40,6 @@ import com.hbisoft.pickit.PickiTCallbacks;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
@@ -62,17 +54,16 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
     public static ArrayList<String> filePathsPhotosChecked;
     public static  ArrayList<String> filePathsVideosChecked;
     public static int statusMode = 0;
-    final int REQ_CODE_EXTERNAL_STORAGE_PERMISSION = 45;
     ViewPager vp_fragments;
     RelativeLayout rl_main;
     FragmentAdapter fragmentAdapter;
     PickiT pickiT;
     public static boolean darkmode_state;
     public static Uri uri;
-    String stringWA = "primary:Android/media/com.whatsapp/WhatsApp/Media/.Statuses/";
     public static InterstitialAd mInterstitialAd;
     TabLayout tabLayout;
-    ActivityResultLauncher<Intent> resultLauncher;
+    public static int adCounter = 0;
+    public static SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,38 +73,21 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
         changeThemeOnStart();
         iniApp();
 
-        resultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
 
-                        uri = null;
-                        uri = Objects.requireNonNull(data).getData();
-
-                        getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-                        Log.i("wss","uri loaded: " + uri.toString());
-
-                        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(),0);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("path", uri.toString());
-                        editor.apply();
-
-
-                        loadFragments();
-
-                    }
-
-                });
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-          getAccess();
+            SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(),0);
+            if(sharedPreferences.getString("path","").length() != 0){
+                uri = Uri.parse(sharedPreferences.getString("path",""));
+                loadFragments();
+            }else{
+                startActivity(new Intent(MainActivity.this, PermissionActivity.class));
+            }
         }else{
             if(ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
                 loadFragments();
             } else {
-                ActivityCompat.requestPermissions(MainActivity.this,new  String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQ_CODE_EXTERNAL_STORAGE_PERMISSION);
+                startActivity(new Intent(MainActivity.this, PermissionActivity.class));
             }
         }
         //start the ad after a few seconds to keep the app starting fast otherwise it's slow as f*ck
@@ -147,54 +121,18 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
                         mInterstitialAd = null;
                     }
                 });
-    }
-    private Boolean checkIfGotAccess() {
-        List<UriPermission> permissionList = getContentResolver().getPersistedUriPermissions();
-        for (int i = 0; i < permissionList.size(); i++) {
-            UriPermission it = permissionList.get(i);
-            if (it.getUri().equals((Parcelable)DocumentsContract.buildDocumentUri((String)"com.android.externalstorage.documents", (String)stringWA)) && it.isReadPermission())
-                return true;
-        }
-        return false;
-    }
-    private void getAccess(){
-        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(),0);
-        String path = sharedPreferences.getString("path","");
-        if (!checkIfGotAccess() && path.length() != 0) {
-
-            uri = Uri.parse(sharedPreferences.getString("path",""));
-            Log.i("wss","uri loaded: " + uri.toString());
-
-            loadFragments();
-
-        }else{
-
-
-            uri = DocumentsContract.buildDocumentUri("com.android.externalstorage.documents", stringWA);
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-            resultLauncher.launch(intent.putExtra("android.provider.extra.INITIAL_URI", (Parcelable)DocumentsContract.buildDocumentUri((String)"com.android.externalstorage.documents", (String)stringWA)));
-
-        }
 
     }
+
+
 
     private void changeThemeOnStart(){
-        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(),0);
-        String path = sharedPreferences.getString("path","");
-        if(path.length() != 0){
-            if (darkmode_state) {
+        if (darkmode_state) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            }else{
+        }else{
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            }
         }
-    }
-    public void showFullscreenAd(){
-        if (mInterstitialAd != null) {
-            mInterstitialAd.show(MainActivity.this);
-        } else {
-            Log.d("show fullscreen", "Cant display -> No ad available!");
-        }
+
     }
     private void iniApp(){
         pickiT = new PickiT(this, this);
@@ -208,7 +146,8 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
         rl_main = findViewById(R.id.rl_main);
         vp_fragments = findViewById(R.id.viewpager_fragments);
 
-
+        sharedPreferences = getSharedPreferences(getPackageName(),0);
+        adCounter = sharedPreferences.getInt("counter",0);
 
     }
     private void loadFragments(){
@@ -229,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
         cv_instagram.setOnClickListener(view -> {
             rl_instagram.setVisibility(View.GONE);
             rl_main.setVisibility(View.VISIBLE);
-            Uri uri = Uri.parse("https://www.instagram.com/marvin_stelter");
+            Uri uri = Uri.parse("https://www.instagram.com/marvin__stelter");
             Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
             likeIng.setPackage("com.instagram.android");
 
@@ -359,12 +298,5 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
         customTabsIntent.launchUrl(MainActivity.this,uri);
 
     }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if(requestCode == REQ_CODE_EXTERNAL_STORAGE_PERMISSION && grantResults.length >0 &&grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            loadFragments();
-        }
-    }
 }

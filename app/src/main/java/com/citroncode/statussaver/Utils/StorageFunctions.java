@@ -24,6 +24,7 @@ import java.util.Random;
 public class StorageFunctions {
 
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     public boolean savePhotoQ(Context context, Bitmap image){
         String currentDate = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String filename = "status_" + currentDate + "_" + new Random().nextInt(61) + 20;
@@ -73,7 +74,6 @@ public class StorageFunctions {
         try {
 
             org.apache.commons.io.FileUtils.copyFile(fileStatus, destFile);
-            destFile.setLastModified(System.currentTimeMillis());
             new SingleMediaScanner(ctx, Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM));
             //TODO Notify
             return true;
@@ -88,8 +88,6 @@ public class StorageFunctions {
     }
     @RequiresApi(api = Build.VERSION_CODES.Q)
     public boolean saveVideoQ(Uri uri3, Context ctx){
-
-        Context context = ctx;
         String videoFileName = "status_" + System.currentTimeMillis() + ".mp4";
 
         ContentValues valuesvideos;
@@ -101,14 +99,14 @@ public class StorageFunctions {
         valuesvideos.put(MediaStore.Video.Media.DATE_ADDED, System.currentTimeMillis() / 1000);
         valuesvideos.put(MediaStore.Video.Media.DATE_TAKEN, System.currentTimeMillis());
         valuesvideos.put(MediaStore.Video.Media.IS_PENDING, 1);
-        ContentResolver resolver = context.getContentResolver();
+        ContentResolver resolver = ctx.getContentResolver();
         Uri collection = MediaStore.Video.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY); //all video files on primary external storage
         Uri uriSavedVideo = resolver.insert(collection, valuesvideos);
 
         ParcelFileDescriptor pfd;
 
         try {
-            pfd = context.getContentResolver().openFileDescriptor(uriSavedVideo,"w");
+            pfd = ctx.getContentResolver().openFileDescriptor(uriSavedVideo,"w");
 
             assert pfd != null;
             FileOutputStream out = new FileOutputStream(pfd.getFileDescriptor());
@@ -133,11 +131,11 @@ public class StorageFunctions {
             valuesvideos.put(MediaStore.Video.Media.IS_PENDING, 0);
             valuesvideos.put(MediaStore.Video.Media.IS_PENDING, 0); //only your app can see the files until pending is turned into 0
 
-            context.getContentResolver().update(uriSavedVideo, valuesvideos, null, null);
+            ctx.getContentResolver().update(uriSavedVideo, valuesvideos, null, null);
 
             return true;
         } catch (Exception e) {
-            Toast.makeText(context, "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ctx, "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
 
             return false;

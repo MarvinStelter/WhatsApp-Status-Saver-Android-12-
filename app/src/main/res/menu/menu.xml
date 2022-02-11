@@ -6,6 +6,8 @@
         android:id="@+id/action_about"/>
     <item android:title="@string/privacy_policy"
         android:id="@+id/action_privacy"/>
+    <item android:title="@string/privacy_infos"
+        android:id="@+id/action_infos"/>
     <item android:title="@string/change_theme"
         android:icon="@drawable/ic_day"
         app:showAsAction="always"
