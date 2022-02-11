@@ -1,10 +1,17 @@
 # WhatsApp Status Saver for Android
 A WhatsApp Status Saver App, targeting API 31 and tested successfully on Android 9, 10, 11 &amp; 12
 
+## Screenshots
+
+<p align="center">
+  <img src="https://api.citroncode.com/shared/statussaver_1.jpg" width="350" alt="Screenshot 1">
+  <img src="https://api.citroncode.com/shared/statussaver_2.jpg" width="350" alt="Screenshot 2">
+</p>
 
 ## Thanks to
-- [Karel](https://github.com/karelantonio) for the spanish translation 
 
+- [Karel](https://github.com/karelantonio) for the spanish translation 
+- [Roman Nurik](https://twitter.com/romannurik) for a great icon designer (https://icon.kitchen/)
 ## License
 
 Copyright 2022 Marvin Stelter
