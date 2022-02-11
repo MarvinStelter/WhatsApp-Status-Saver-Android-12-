@@ -3,7 +3,7 @@ A WhatsApp Status Saver App, targeting API 31 and tested successfully on Android
 
 
 ## Thanks to
-- [Karel](https://github.com/@karelantonio) for the spanish translation 
+- [Karel](https://github.com/karelantonio) for the spanish translation 
 
 ## License
 
