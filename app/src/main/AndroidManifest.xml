@@ -31,6 +31,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".PermissionActivity"/>
+        <activity android:name=".DemoGDPRActivity"/>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.citroncode.statussaver.Utils.provider"

@@ -33,10 +33,12 @@ import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.admanager.AdManagerInterstitialAd;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.lazygeniouz.filecompat.file.DocumentFileCompat;
 import com.tapadoo.alerter.Alerter;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -49,8 +51,8 @@ public class FragmentPhotos extends Fragment {
     RecyclerView.LayoutManager layoutManager;
     PhotosAdapter rv_adapter;
     private Activity mActivity;
-    static public DocumentFile dir;
-    public DocumentFile[] fileListed;
+    static public DocumentFileCompat dir;
+    public List<DocumentFileCompat> fileListed;
     FloatingActionButton fab_save_photo;
     StorageFunctions storageHelper;
     SharedPreferences.Editor editor;
@@ -125,14 +127,14 @@ public class FragmentPhotos extends Fragment {
             MainActivity.statusMode = 0;
             try {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-                     dir = DocumentFile.fromTreeUri(ctx, MainActivity.uri);
+                     dir = DocumentFileCompat.Companion.fromTreeUri(ctx, MainActivity.uri);
                     assert dir != null;
                     fileListed = dir.listFiles();
 
-                    for(int i = 0;i < fileListed.length;i++){
+                    for(int i = 0;i < fileListed.size();i++){
                         try{
-                            if(!Objects.requireNonNull(fileListed[i].getName()).contains(".mp4") && !Objects.requireNonNull(fileListed[i].getName()).contains(".nomedia")){
-                                MainActivity.filePathsPhotos.add(String.valueOf(fileListed[i].getUri()));
+                            if(!Objects.requireNonNull(fileListed.get(i).getName()).contains(".mp4") && !Objects.requireNonNull(fileListed.get(i).getName()).contains(".nomedia")){
+                                MainActivity.filePathsPhotos.add(String.valueOf(fileListed.get(i).getUri()));
                             }
 
                         }catch (NullPointerException e){

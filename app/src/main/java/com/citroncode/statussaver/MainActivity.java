@@ -23,12 +23,16 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import com.citroncode.statussaver.Adapter.FragmentAdapter;
+import com.google.ads.mediation.admob.AdMobAdapter;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
@@ -46,7 +50,8 @@ import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 
-public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
+
+public class MainActivity extends AppCompatActivity implements PickiTCallbacks{
 
     public static ArrayList<String> filePathsPhotos;
     public static ArrayList<String> filePathsSaved;
@@ -65,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
     public static int adCounter = 0;
     public static SharedPreferences sharedPreferences;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,17 +80,16 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
         iniApp();
 
 
-
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-            SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(),0);
-            if(sharedPreferences.getString("path","").length() != 0){
-                uri = Uri.parse(sharedPreferences.getString("path",""));
+            SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), 0);
+            if (sharedPreferences.getString("path", "").length() != 0) {
+                uri = Uri.parse(sharedPreferences.getString("path", ""));
                 loadFragments();
-            }else{
+            } else {
                 startActivity(new Intent(MainActivity.this, PermissionActivity.class));
             }
-        }else{
-            if(ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+        } else {
+            if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 loadFragments();
             } else {
                 startActivity(new Intent(MainActivity.this, PermissionActivity.class));
@@ -92,19 +97,28 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
         }
         //start the ad after a few seconds to keep the app starting fast otherwise it's slow as f*ck
         //Maybe there's another fix for that
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(() -> loadAds());
-            }
-        }, 5000);
-
+        if(sharedPreferences.getString("consent_showed","").length() == 0){
+            GDPRConsentDialog();
+        }else{
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    runOnUiThread(() -> loadAds());
+                }
+            }, 5000);
+        }
     }
+    
     private void loadAds(){
+        Bundle extras = new Bundle();
+        extras.putString("npa", String.valueOf(sharedPreferences.getInt("consent",0)));
+
         MobileAds.initialize(this, initializationStatus -> {
         });
         AdView mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
+        AdRequest adRequest = new AdRequest.Builder()
+                .addNetworkExtrasBundle(AdMobAdapter.class, extras)
+                .build();
         mAdView.loadAd(adRequest);
 
         InterstitialAd.load(this,"ca-app-pub-2797112522958944/7231654693", adRequest,
@@ -123,8 +137,6 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
                 });
 
     }
-
-
 
     private void changeThemeOnStart(){
         if (darkmode_state) {
@@ -155,6 +167,78 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
         vp_fragments.setAdapter(fragmentAdapter);
         tabLayout.setupWithViewPager(vp_fragments);
     }
+    private void GDPRConsentDialog(){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        AlertDialog dialog;
+        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        View dialogView= inflater.inflate(R.layout.dialog_gdpr, null);
+        dialogBuilder.setView(dialogView);
+
+        TextView tv_more = dialogView.findViewById(R.id.tv_gdpr_text_three);
+        Button btn_allow = dialogView.findViewById(R.id.btn_conset_true);
+        RelativeLayout btn_reject = dialogView.findViewById(R.id.btn_consent_false);
+
+        dialogBuilder.setCancelable(false);
+
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        btn_allow.setOnClickListener(view -> {
+            editor.putInt("consent",1);
+            editor.putString("consent_showed","true");
+            editor.apply();
+
+            dialog.dismiss();
+
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    runOnUiThread(() -> loadAds());
+                }
+            }, 5000);
+        });
+        btn_reject.setOnClickListener(view -> {
+            editor.putInt("consent",0);
+            editor.putString("consent_showed","true");
+            editor.apply();
+
+            dialog.dismiss();
+
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    runOnUiThread(() -> loadAds());
+                }
+            }, 5000);
+        });
+
+        tv_more.setOnClickListener(view -> {
+            dialog.dismiss();
+            AlertDialog dialog2;
+            MaterialAlertDialogBuilder dialogBuilder2 = new MaterialAlertDialogBuilder(this);
+            LayoutInflater inflater2 = this.getLayoutInflater();
+
+            View dialogView2  = inflater2.inflate(R.layout.dialog_gdpr_short, null);
+            dialogBuilder2.setView(dialogView2);
+
+            dialogBuilder2.setCancelable(false);
+
+            dialog2 = dialogBuilder2.create();
+            dialog2.show();
+
+            TextView tv_partners = dialogView2.findViewById(R.id.tv_show_admob_parnters);
+            tv_partners.setOnClickListener(view2 ->{
+                openCustomTab("https://policies.google.com/privacy");
+            });
+            Button btn_back = dialogView2.findViewById(R.id.btn_back);
+            btn_back.setOnClickListener(view2 -> {
+                dialog2.dismiss();
+                GDPRConsentDialog();
+            });
+        });
+    }
     private void instagramDialog(){
         RelativeLayout rl_instagram = findViewById(R.id.rl_insta);
         rl_instagram.setVisibility(View.VISIBLE);
@@ -181,8 +265,6 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
 
         });
     }
-
-
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
@@ -249,6 +331,9 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
                 AlertDialog dialog = builder.create();
                 dialog.show();
                 break;
+            case R.id.action_privacy_settings:
+                GDPRConsentDialog();
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -298,5 +383,6 @@ public class MainActivity extends AppCompatActivity implements PickiTCallbacks {
         customTabsIntent.launchUrl(MainActivity.this,uri);
 
     }
+
 
 }

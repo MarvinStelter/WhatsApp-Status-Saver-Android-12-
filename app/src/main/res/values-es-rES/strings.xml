@@ -26,4 +26,20 @@
     <string name="storage_access_required">Permiso de almacenamiento necesario!</string>
     <string name="allow">Permitir</string>
     <string name="error_contact_dev">Algo anduvo mal, intenta de nuevo o contacta al desarrollador!</string>
+
+    <string name="datenschutz_einwilligung">Concentimiento de Protección de Datos</string>
+    <string name="gdpr_text_one">Nos preocupamos por tu privacidad y la seguridad de tus datos. Mantenemos esta app gratuita por el uso de servicios de terceros.</string>
+    <string name="gdpr_long_two">Utilizamos anuncios en esta app. Este servicio (Incluyendo nuestros socios) recolectamos identificadores únicos y otros datos personales. Tu puedes cambiarlo en cualquier momento en los ajustes.</string>
+    <string name="gdpr_text_three"><u>Leer mas sobre este servicio y tus datos personales.</u></string>
+    <string name="gdpr_text_four">¿Podemos utilizar tus datos para ese proposito al igual que para mostrar anuncios personalizados?</string>
+    <string name="gdpr_text_five">Al aceptar, confirmas que eres mayor de 16 años.</string>
+    <string name="gdpr_button_one">Si, estoy de acuerdo</string>
+    <string name="nein_danke">No, gracias</string>
+    <string name="gdpr_text_seven">Comprendo que seguire viendo anuncios, pero pueden no ser relevantes para mis intereses.</string>
+    <string name="privacy_action">Consentimiento de privacidad</string>
+    <string name="text_gdpr_eight">Utilizamos los siguientes servicios de terceros en esta app:</string>
+    <string name="admob_show_partners">-<u> Admob (Mostrar socios)</u></string>
+    <string name="text_gdpr_nine">Presiona sobre un servicio para ver su política de privacidad.</string>
+    <string name="btn_back_gdpr">Volver</string>
+
 </resources>

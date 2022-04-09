@@ -27,4 +27,20 @@
     <string name="error_contact_dev">Ein Fehler ist aufgetreten, bitte versuche es erneut oder kontaktiere den Entwickler!</string>
     <string name="allow">Erlauben</string>
     <string name="alert_long">Um die App nutzen zu können brauchen wir  Zugriff auf den Speicher deines Smartphones. Deine Dateien werden von uns nicht hochegeladen oder mit anderen Personen geteilt, alle Dateien bleiben Lokal auf deinem Gerät gespeichert.</string>
+    <string name="datenschutz_einwilligung">Datenschutz Einwilligung</string>
+    <string name="gdpr_text_one">Wir sorgen uns um deine Privatsphäre und Datensicherheit.\nWir bemühen uns diese Anwendung kostenlos zu halten durch Nutzung gewisser Drittanbieter Dienste.</string>
+    <string name="gdpr_long_two">Wir benutzen Werbung in dieser Anwendung. Dieser Dienst (inkl. seiner Partner) sammelt eindeutige Identifiezierungsmerkmale sowie auch weitere persönliche Daten.\nDu kannst deine Zustimmung in den Einstellungen jederzeit ändern.</string>
+    <string name="gdpr_text_three"><u>Erfahre mehr über diesen Dienst und deine Persönlichen Daten.</u></string>
+    <string name="gdpr_text_four">Dürfen wir weiterhin deine für diese Zwecke als auch für personalisierte Werbung nutzen?</string>
+    <string name="gdpr_text_five">Durch deine Zustimmung bestätigst du, dass du über 16 Jahre alt bist.</string>
+    <string name="gdpr_button_one">Ja, ich stimme zu</string>
+    <string name="nein_danke">Nein danke</string>
+    <string name="gdpr_text_seven">Ich verstehe, dass ich trotzdem Werbung sehen werde, jedoch wird diese nicht so relevant für mich sein.</string>
+    <string name="privacy_action">Datenschutz Einwilligung</string>
+    <string name="text_gdpr_eight">Wir benutzen folgende Drittanbieter Services:</string>
+    <string name="admob_show_partners">-<u> Admob (Partner anzeigen)</u></string>
+    <string name="text_gdpr_nine">Klicke auf einen Service um dir die Datenschutzerklärung anzusehen.</string>
+    <string name="btn_back_gdpr">Zurück</string>
+
+
 </resources>

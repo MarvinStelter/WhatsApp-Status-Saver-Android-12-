@@ -10,8 +10,8 @@ android {
         applicationId "com.citroncode.statussaver"
         minSdkVersion 23
         targetSdkVersion 31
-        versionCode 4
-        versionName "2.0"
+        versionCode 6
+        versionName "5.4 (1)"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -46,4 +46,5 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
     implementation 'com.github.tapadoo:alerter:7.2.4'
     implementation 'androidx.browser:browser:1.4.0'
+    implementation "com.lazygeniouz:documentfile_compat:0.8"
 }

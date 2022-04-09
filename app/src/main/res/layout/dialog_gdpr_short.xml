@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_title_gdpr_admob"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="20dp"
+            android:text="@string/datenschutz_einwilligung"
+            android:textColor="@color/textColor"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_gdpr_text_eight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_title_gdpr_admob"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:text="@string/text_gdpr_eight"
+            android:textColor="@color/textColor" />
+
+        <TextView
+            android:id="@+id/tv_show_admob_parnters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_gdpr_text_eight"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:text="@string/admob_show_partners"
+            android:textColor="@color/accent" />
+
+        <TextView
+            android:id="@+id/tv_gdpr_text_nine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_show_admob_parnters"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:text="@string/text_gdpr_nine"
+            android:textColor="@color/textColor" />
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_gdpr_text_nine"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="20dp"
+            android:text="@string/btn_back_gdpr"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/backgroundPrimary" />
+
+
+</RelativeLayout>

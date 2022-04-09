@@ -24,11 +24,13 @@ import com.citroncode.statussaver.MainActivity;
 import com.citroncode.statussaver.R;
 import com.citroncode.statussaver.Utils.StorageFunctions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.lazygeniouz.filecompat.file.DocumentFileCompat;
 import com.tapadoo.alerter.Alerter;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class FragmentVideos extends Fragment {
@@ -41,7 +43,7 @@ public class FragmentVideos extends Fragment {
     VideosAdapter rv_adapter;
     private Activity mActivity;
     public static final File STATUS_DIRECTORY = new File(Environment.getExternalStorageDirectory() + File.separator + "Android/media/com.whatsapp/WhatsApp/Media/.Statuses");
-    DocumentFile[] fileListed2;
+    List<DocumentFileCompat> fileListed2;
     FloatingActionButton fab_save_video;
     StorageFunctions storageHelper;
     SharedPreferences.Editor editor;
@@ -125,11 +127,11 @@ public class FragmentVideos extends Fragment {
                 //Didn't work as expected, that's why we grab it from the first fragment.
                 fileListed2 = FragmentPhotos.dir.listFiles();
 
-                for(int i = 0;i < fileListed2.length;i++){
+                for(int i = 0;i < fileListed2.size();i++){
                     try{
-                        if(fileListed2[i].getName().contains(".mp4") && !fileListed2[i].getName().contains(".nomedia")){
+                        if(fileListed2.get(i).getName().contains(".mp4") && !fileListed2.get(i).getName().contains(".nomedia")){
 
-                            MainActivity.filePathsVideos.add(String.valueOf(fileListed2[i].getUri()));
+                            MainActivity.filePathsVideos.add(String.valueOf(fileListed2.get(i).getUri()));
 
                         }
 

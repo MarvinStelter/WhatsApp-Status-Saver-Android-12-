@@ -12,4 +12,6 @@
         android:icon="@drawable/ic_day"
         app:showAsAction="always"
         android:id="@+id/action_theme"/>
+    <item android:title="@string/privacy_action"
+        android:id="@+id/action_privacy_settings"/>
 </menu>

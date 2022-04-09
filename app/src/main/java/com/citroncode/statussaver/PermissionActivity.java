@@ -54,9 +54,6 @@ public class PermissionActivity extends AppCompatActivity{
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("path", uri.toString());
                         editor.apply();
-
-
-
                         startApp();
 
                     }
@@ -100,7 +97,7 @@ public class PermissionActivity extends AppCompatActivity{
         List<UriPermission> permissionList = getContentResolver().getPersistedUriPermissions();
         for (int i = 0; i < permissionList.size(); i++) {
             UriPermission it = permissionList.get(i);
-            if (it.getUri().equals((Parcelable)DocumentsContract.buildDocumentUri((String)"com.android.externalstorage.documents", (String)stringWA)) && it.isReadPermission())
+            if (it.getUri().equals(DocumentsContract.buildDocumentUri((String)"com.android.externalstorage.documents", (String)stringWA)) && it.isReadPermission())
                 return true;
         }
         return false;

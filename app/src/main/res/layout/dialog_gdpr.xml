@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_title_gdpr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="20dp"
+                android:text="@string/datenschutz_einwilligung"
+                android:textColor="@color/textColor"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_gdpr_text_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_title_gdpr"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
+        android:text="@string/gdpr_text_one"
+        android:textColor="@color/textColor"
+        android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_gdpr_text_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_gdpr_text_one"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:text="@string/gdpr_long_two"
+                android:textColor="@color/textColor" />
+
+            <TextView
+                android:id="@+id/tv_gdpr_text_three"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_gdpr_text_two"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:text="@string/gdpr_text_three"
+                android:textColor="@color/accent" />
+
+            <TextView
+                android:id="@+id/tv_gdpr_text_four"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_gdpr_text_three"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:text="@string/gdpr_text_four"
+                android:textColor="@color/textColor"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_gdpr_text_five"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_gdpr_text_four"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:text="@string/gdpr_text_five"
+                android:textColor="@color/textColor" />
+
+            <Button
+                android:id="@+id/btn_conset_true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_gdpr_text_five"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:text="@string/gdpr_button_one"
+                android:textColor="@color/white"
+                app:backgroundTint="@color/backgroundPrimary" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btn_conset_true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="0dp">
+
+                <RelativeLayout
+                    android:id="@+id/btn_consent_false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <TextView
+                        android:id="@+id/tv_gdpr_text_six"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerInParent="true"
+                        android:text="@string/nein_danke"
+                        android:textColor="@color/textColor"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_gdpr_text_seven"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_gdpr_text_six"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:gravity="center"
+                        android:text="@string/gdpr_text_seven"
+                        android:textColor="@color/textColor"
+                        android:textSize="11sp" />
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
