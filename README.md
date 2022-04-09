@@ -8,13 +8,17 @@ A WhatsApp Status Saver App, targeting API 31 and tested successfully on Android
   <img src="https://api.citroncode.com/shared/statussaver_2.jpg" width="350" alt="Screenshot 2">
 </p>
 
+## Download on Google Play
+
+<a href='https://play.google.com/store/apps/details?id=de.msdevs.einschlafhilfe&gl=DE&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
+
 ## Thanks to
 
 - [Karel](https://github.com/karelantonio) for the spanish translation 
 - [Roman Nurik](https://twitter.com/romannurik) for a great icon designer (https://icon.kitchen/)
 ## License
 
-Copyright 2022 Marvin Stelter
+Copyright 2017 - 2022 Marvin Stelter
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
