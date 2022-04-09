@@ -16,7 +16,7 @@ A WhatsApp Status Saver App, targeting API 31 and tested successfully on Android
 
 - [Karel](https://github.com/karelantonio) for the spanish translation 
 - [Roman Nurik](https://twitter.com/romannurik) for a great icon designer (https://icon.kitchen/)
-- 
+
 ## License
 
 Copyright 2017 - 2022 Marvin Stelter
