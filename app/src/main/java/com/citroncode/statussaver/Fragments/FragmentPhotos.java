@@ -123,7 +123,7 @@ public class FragmentPhotos extends Fragment {
         }).start();
     }
     public boolean loadPhotos(){
-
+            MainActivity.filePathsPhotos.clear();
             MainActivity.statusMode = 0;
             try {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
@@ -182,8 +182,8 @@ public class FragmentPhotos extends Fragment {
     }
     private void reset(){
         //TODO Improve
-        MainActivity.filePathsPhotos = new ArrayList<>();
-        MainActivity.filePathsPhotosChecked = new ArrayList<>();
+        MainActivity.filePathsPhotos.clear();
+        MainActivity.filePathsPhotosChecked.clear();
         checkFAB();
 
         progressBar.setVisibility(View.VISIBLE);
