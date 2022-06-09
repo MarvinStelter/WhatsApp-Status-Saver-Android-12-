@@ -1,5 +1,7 @@
 package com.citroncode.statussaver.Fragments;
 
+import static com.citroncode.statussaver.Fragments.FragmentPhotos.dir;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -69,7 +71,7 @@ public class FragmentVideos extends Fragment {
         setUpRecyclerView();
 
         fab_save_video.setOnClickListener(view1 -> {
-             for(int i = 0;i < MainActivity.filePathsVideos.size();i++){
+            for(int i = 0;i < MainActivity.filePathsVideos.size();i++){
                 if (MainActivity.filePathsVideosChecked.get(i) != "0") {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
 
@@ -100,6 +102,7 @@ public class FragmentVideos extends Fragment {
         });
     }
     private void setUpRecyclerView(){
+
         new Thread(() -> {
             if (loadVideos()) {
                 mActivity.runOnUiThread(() -> {
@@ -120,12 +123,14 @@ public class FragmentVideos extends Fragment {
         }).start();
     }
     public boolean loadVideos(){
-
+        MainActivity.filePathsVideos.clear();
         MainActivity.statusMode = 0;
         try {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
                 //Didn't work as expected, that's why we grab it from the first fragment.
-                fileListed2 = FragmentPhotos.dir.listFiles();
+                dir = DocumentFileCompat.Companion.fromTreeUri(ctx, MainActivity.uri);
+                assert dir != null;
+                fileListed2 = dir.listFiles();
 
                 for(int i = 0;i < fileListed2.size();i++){
                     try{
@@ -144,7 +149,6 @@ public class FragmentVideos extends Fragment {
                 for (int y = 0; y < MainActivity.filePathsVideos.size();y++){
                     MainActivity.filePathsVideosChecked.add("0");
                 }
-
 
                 return true;
 
